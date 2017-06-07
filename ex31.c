@@ -34,7 +34,8 @@ int main(){
     int unlinkResult;
 
     //Create key.
-    key = ftok("ex31.c", 'k');
+    //TODO remove ../
+    key = ftok("../ex31.c", 'k');
 
     //Check if ftok succeeded.
     if(key < 0){
