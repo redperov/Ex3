@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <signal.h>
+#include <memory.h>
 
 #define SHM_SIZE 4096
 
@@ -21,6 +22,10 @@ void ReadPid(pid_t *pid, int file);
 void NotifyGameStart(pid_t pid);
 
 void ReleaseMemory(int shmid);
+
+void WriteMessage(char *message);
+
+void PrintResult(char result);
 
 int main(){
 
@@ -32,6 +37,7 @@ int main(){
     pid_t pid1;
     pid_t pid2;
     int unlinkResult;
+    int stop;
 
     //Create key.
     //TODO remove ../
@@ -74,7 +80,7 @@ int main(){
     }
 
     //Open FIFO.
-    file = open("fifo_clientTOserver", O_RDONLY);
+    file = open("fifo_clientTOserver", O_RDWR);
 
     //Check if open succeeded.
     if(file < 0){
@@ -96,9 +102,46 @@ int main(){
         exit(1);
     }
 
+    //Notify first process.
     NotifyGameStart(pid1);
+    stop = 0;
 
-    //TODO just uncomment, ReleaseMemory(shmid);
+    while(!stop){
+
+        //Check if first process wrote to memory.
+        if(strcmp(data, "") != 0){
+
+            stop = 1;
+        }
+        else{
+
+            sleep(1);
+        }
+    }
+
+    //Notify second process.
+    NotifyGameStart(pid2);
+
+    stop = 0;
+
+    while(!stop){
+
+        //Check if game is over
+        if(data[0] == 'B' || data[0] == 'W' || data[0] == 'T'){
+            stop = 1;
+        }
+        else{
+            sleep(1);
+        }
+    }
+
+    WriteMessage("GAME OVER\n");
+
+    //Print game result message.
+    PrintResult(data[0]);
+
+    //Release shared memory.
+    ReleaseMemory(shmid);
 }
 
 void ReadPid(pid_t *pid, int file){
@@ -141,7 +184,42 @@ void ReleaseMemory(int shmid){
     //Check if shmctl succeeded.
     if(freeMemory < 0){
 
-        perror("Error: free memory failed.\n");
+        perror("Error: memory release failed.\n");
         exit(1);
+    }
+}
+
+void WriteMessage(char *message) {
+
+    int writeResult;
+
+    writeResult = write(1, message, strlen(message));
+
+    //Check if write succeeded.
+    if (writeResult < 0) {
+
+        perror("Error: write failed.\n");
+        exit(1);
+    }
+}
+
+void PrintResult(char result){
+
+    switch(result){
+
+        case 'B':
+            WriteMessage("Winning player: Black\n");
+            break;
+
+        case 'W':
+            WriteMessage("Winning player: White\n");
+            break;
+
+        case 'T':
+            WriteMessage("No winning player\n");
+            break;
+
+        default:
+            break;
     }
 }
