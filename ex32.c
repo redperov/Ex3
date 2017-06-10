@@ -268,7 +268,8 @@ void WaitForOpponent(char *data, char board[][BOARD_SIZE]) {
             isMoveMade = 1;
         } else {
 
-            WriteMessage("Waiting for the other player to make a move\n");
+            //TODO uncomment
+           // WriteMessage("Waiting for the other player to make a move\n");
             sleep(1);
         }
     }
@@ -281,6 +282,11 @@ void WaitForOpponent(char *data, char board[][BOARD_SIZE]) {
 
     //Update board according to opponent move.
     UpdateBoard(directions, y, x, opponentColor, board);
+
+    WriteMessage("The board is:\n");
+
+    //Print board to screen.
+    PrintBoard(board);
 }
 
 void FillDirections(int x, int y, char player, char opponent, int directions[],
@@ -319,6 +325,8 @@ void PrintBoard(char board[][BOARD_SIZE]) {
 
         WriteMessage("\n");
     }
+
+    WriteMessage("\n");
 }
 
 void WriteCell(char num) {

@@ -15,16 +15,47 @@
 #include <signal.h>
 #include <memory.h>
 
+//TODO minimize size
 #define SHM_SIZE 4096
 
+/**
+ * function name: ReadPid.
+ * The input: pid, file descriptor.
+ * The output: void.
+ * The function operation: Reads a pid from a file.
+*/
 void ReadPid(pid_t *pid, int file);
 
+/**
+ * function name: NotifyGameStart.
+ * The input: pid.
+ * The output: void.
+ * The function operation: Notifies a process to play.
+*/
 void NotifyGameStart(pid_t pid);
 
+/**
+ * function name: ReleaseMemory.
+ * The input: shmid.
+ * The output: void.
+ * The function operation: releases shared memory.
+*/
 void ReleaseMemory(int shmid);
 
+/**
+ * function name: WriteMessage.
+ * The input: message to print.
+ * The output: void.
+ * The function operation: prints the message to the screen.
+*/
 void WriteMessage(char *message);
 
+/**
+ * function name: PrintResult.
+ * The input: game result.
+ * The output: void.
+ * The function operation: prints the game result message.
+*/
 void PrintResult(char result);
 
 int main(){
