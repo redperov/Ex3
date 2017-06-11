@@ -274,6 +274,11 @@ void WaitForOpponent(char *data, char board[][BOARD_SIZE]) {
         }
     }
 
+    //Check if game is over.
+    if(data[0] != myColor && data[0] != opponentColor){
+        return;
+    }
+
     x = data[1] - '0';
     y = data[2] - '0';
 
@@ -573,6 +578,16 @@ void InitializeBoard(char board[][BOARD_SIZE], char *data) {
     //Set white cells.
     board[3][4] = 'w';
     board[4][3] = 'w';
+
+    //TODO delete
+    for (i= 0; i < 5; ++i) {
+        for (j = 0; j < 8; ++j) {
+            board[i][j] = 'w';
+        }
+    }
+
+    board[2][2] = 'b';
+    //TODO delete
 
     if (myColor == 'w') {
 
