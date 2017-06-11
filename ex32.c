@@ -16,55 +16,205 @@
 #define SHM_SIZE 4096
 #define BOARD_SIZE 8
 
+/**
+ * function name: PrintResult.
+ * The input: game result.
+ * The output: void.
+ * The function operation: prints the game result message.
+*/
 void WritePid(int file, pid_t pid);
 
+/**
+ * function name: SIGUSR1Handler.
+ * The input: signum.
+ * The output: void.
+ * The function operation: handles SIGUSR1 signal.
+*/
 void SIGUSR1Handler(int signum);
 
-void InitializeBoard(char board[][BOARD_SIZE], char *data);
+/**
+ * function name: InitializeBoard.
+ * The input: game board, shared memory data.
+ * The output: void.
+ * The function operation: Initializes the board.
+*/
+void InitializeBoard(char board[], char *data);
 
-int ReadUserInput(char board[][BOARD_SIZE], int *x, int *y);
+/**
+ * function name: ReadUserInput.
+ * The input: game board, pointer to x, pointer to y.
+ * The output: user input status.
+ * The function operation: prints the game result message.
+*/
+int ReadUserInput(char board[], int *x, int *y);
 
+/**
+ * function name: IsValidCell.
+ * The input: user input, pointer to x, pointer to y.
+ * The output: is the cell valid.
+ * The function operation: checks if the cell is valid.
+*/
 int IsValidCell(char input[], int *x, int *y);
 
-int IsValidMove(int directions[], int x, int y, char board[][BOARD_SIZE]);
+/**
+ * function name: IsValidMove.
+ * The input: directions, x, y, game board.
+ * The output: is the move valid.
+ * The function operation: checks if the move is valid.
+*/
+int IsValidMove(int directions[], int x, int y, char board[]);
 
+/**
+ * function name: WriteMessage.
+ * The input: message to print.
+ * The output: void.
+ * The function operation: prints the given message.
+*/
 void WriteMessage(char *message);
 
+/**
+ * function name: WriteCell.
+ * The input: cell data.
+ * The output: void.
+ * The function operation: prints the cell's data.
+*/
 void WriteCell(char num);
 
-void PrintBoard(char board[][BOARD_SIZE]);
+/**
+ * function name: PrintBoard.
+ * The input: game board.
+ * The output: void.
+ * The function operation: prints the board to the screen.
+*/
+void PrintBoard(char board[]);
 
-void
-HandleResult(int result, int x, int y, char board[][BOARD_SIZE], char *data);
+/**
+ * function name: HandleResult.
+ * The input: result, x, y, game board, shared memory data.
+ * The output: void.
+ * The function operation: handles the user input response.
+*/
+void HandleResult(int result, int x, int y, char board[], char *data);
 
-int checkUp(char *gameArray, int x, int y, char mySymbol, char opSymbol);
+/**
+ * function name: MoveUp.
+ * The input: grid, x, y, my symbol, opponent symbol.
+ * The output: number of moves.
+ * The function operation: checks how many moves are possible at the given
+ * direction.
+*/
+int MoveUp(char *grid, int x, int y, char mySymbol, char opponentSymbol);
 
-int checkDown(char *gameArray, int x, int y, char mySymbol, char opSymbol);
+/**
+ * function name: MoveUp.
+ * The input: grid, x, y, my symbol, opponent symbol.
+ * The output: number of moves.
+ * The function operation: checks how many moves are possible upwards.
+*/
+int MoveDown(char *grid, int x, int y, char mySymbol, char opponentSymbol);
 
-int checkLeft(char *gameArray, int x, int y, char mySymbol, char opSymbol);
+/**
+ * function name: MoveLeft.
+ * The input: grid, x, y, my symbol, opponent symbol.
+ * The output: number of moves.
+ * The function operation: checks how many moves are possible to the left.
+*/
+int MoveLeft(char *grid, int x, int y, char mySymbol, char opponentSymbol);
 
-int checkRight(char *gameArray, int x, int y, char mySymbol, char opSymbol);
+/**
+ * function name: MoveRight.
+ * The input: grid, x, y, my symbol, opponent symbol.
+ * The output: number of moves.
+ * The function operation: checks how many moves are possible to the right.
+*/
+int MoveRight(char *grid, int x, int y, char mySymbol, char opponentSymbol);
 
-int checkUpRight(char *gameArray, int x, int y, char mySymbol, char opSymbol);
+/**
+ * function name: MoveUpperRight.
+ * The input: grid, x, y, my symbol, opponent symbol.
+ * The output: number of moves.
+ * The function operation: checks how many moves are possible to the upper
+ * right side.
+*/
+int MoveUpperRight(char *grid, int x, int y, char mySymbol,
+                   char opponentSymbol);
 
-int checkUpLeft(char *gameArray, int x, int y, char mySymbol, char opSymbol);
+/**
+ * function name: MoveUpperLeft.
+ * The input: grid, x, y, my symbol, opponent symbol.
+ * The output: number of moves.
+ * The function operation: checks how many moves are possible to the upper
+ * left side.
+*/
+int MoveUpperLeft(char *grid, int x, int y, char mySymbol, char opponentSymbol);
 
-int checkDownRight(char *gameArray, int x, int y, char mySymbol, char opSymbol);
+/**
+ * function name: MoveLowerRight.
+ * The input: grid, x, y, my symbol, opponent symbol.
+ * The output: number of moves.
+ * The function operation: checks how many moves are possible to te lower
+ * right side.
+*/
+int MoveLowerRight(char *grid, int x, int y, char mySymbol,
+                   char opponentSymbol);
 
-int checkDownLeft(char *gameArray, int x, int y, char mySymbol, char opSymbol);
+/**
+ * function name: MoveLowerLeft.
+ * The input: grid, x, y, my symbol, opponent symbol.
+ * The output: number of moves.
+ * The function operation: checks how many moves are possible to the lower
+ * left side.
+*/
+int MoveLowerLeft(char *grid, int x, int y, char mySymbol, char opponentSymbol);
 
+/**
+ * function name: UpdateBoard.
+ * The input: game result.
+ * The output: void.
+ * The function operation: prints the game result message.
+*/
 void UpdateBoard(int *directions, int x, int y, char color,
-                 char board[][BOARD_SIZE]);
+                 char board[]);
 
+/**
+ * function name: FillDirections.
+ * The input: game result.
+ * The output: void.
+ * The function operation: prints the game result message.
+*/
 void FillDirections(int x, int y, char player, char opponent, int directions[],
-                    char board[][BOARD_SIZE]);
+                    char board[]);
 
+/**
+ * function name: WriteMove.
+ * The input: game result.
+ * The output: void.
+ * The function operation: prints the game result message.
+*/
 void WriteMove(int x, int y, char *data);
 
-void WaitForOpponent(char *data, char board[][BOARD_SIZE]);
+/**
+ * function name: WaitForOpponent.
+ * The input: game result.
+ * The output: void.
+ * The function operation: prints the game result message.
+*/
+void WaitForOpponent(char *data, char board[]);
 
-int IsGameOver(char board[][BOARD_SIZE], char *data);
+/**
+ * function name: IsGameOver.
+ * The input: game result.
+ * The output: void.
+ * The function operation: prints the game result message.
+*/
+int IsGameOver(char board[], char *data);
 
+/**
+ * function name: PrintResult.
+ * The input: game result.
+ * The output: void.
+ * The function operation: prints the game result message.
+*/
 void PrintResult(char result);
 
 //TODO make local
@@ -83,7 +233,7 @@ int main() {
     struct sigaction usr_action;
     sigset_t         block_mask;
     int              resultValue;
-    char             board[BOARD_SIZE][BOARD_SIZE];
+    char             board[BOARD_SIZE * BOARD_SIZE];
     int              x;
     int              y;
 
@@ -194,7 +344,7 @@ int main() {
 
         HandleResult(resultValue, x, y, board, data);
 
-        if(IsGameOver(board, data)){
+        if (IsGameOver(board, data)) {
 
             stop = 1;
         }
@@ -207,7 +357,7 @@ int main() {
 }
 
 void
-HandleResult(int result, int x, int y, char board[][BOARD_SIZE], char *data) {
+HandleResult(int result, int x, int y, char board[], char *data) {
 
     switch (result) {
 
@@ -232,8 +382,6 @@ HandleResult(int result, int x, int y, char board[][BOARD_SIZE], char *data) {
             WriteMessage("Please choose another square\n");
             break;
 
-            //TODO handle the case of game over
-
         default:
             break;
     }
@@ -253,7 +401,7 @@ void WriteMove(int x, int y, char *data) {
     data[3] = '\0';
 }
 
-void WaitForOpponent(char *data, char board[][BOARD_SIZE]) {
+void WaitForOpponent(char *data, char board[]) {
 
     int isMoveMade = 0;
     int x;
@@ -269,13 +417,13 @@ void WaitForOpponent(char *data, char board[][BOARD_SIZE]) {
         } else {
 
             //TODO uncomment
-           // WriteMessage("Waiting for the other player to make a move\n");
+            // WriteMessage("Waiting for the other player to make a move\n");
             sleep(1);
         }
     }
 
     //Check if game is over.
-    if(data[0] != myColor && data[0] != opponentColor){
+    if (data[0] != myColor && data[0] != opponentColor) {
         return;
     }
 
@@ -295,26 +443,26 @@ void WaitForOpponent(char *data, char board[][BOARD_SIZE]) {
 }
 
 void FillDirections(int x, int y, char player, char opponent, int directions[],
-                    char board[][BOARD_SIZE]) {
+                    char board[]) {
 
-    directions[0] = checkLeft(board, x, y, player, opponent);
+    directions[0] = MoveLeft(board, x, y, player, opponent);
 
-    directions[1] = checkUpLeft(board, x, y, player, opponent);
+    directions[1] = MoveUpperLeft(board, x, y, player, opponent);
 
-    directions[2] = checkUp(board, x, y, player, opponent);
+    directions[2] = MoveUp(board, x, y, player, opponent);
 
-    directions[3] = checkUpRight(board, x, y, player, opponent);
+    directions[3] = MoveUpperRight(board, x, y, player, opponent);
 
-    directions[4] = checkRight(board, x, y, player, opponent);
+    directions[4] = MoveRight(board, x, y, player, opponent);
 
-    directions[5] = checkDownRight(board, x, y, player, opponent);
+    directions[5] = MoveLowerRight(board, x, y, player, opponent);
 
-    directions[6] = checkDown(board, x, y, player, opponent);
+    directions[6] = MoveDown(board, x, y, player, opponent);
 
-    directions[7] = checkDownLeft(board, x, y, player, opponent);
+    directions[7] = MoveLowerLeft(board, x, y, player, opponent);
 }
 
-void PrintBoard(char board[][BOARD_SIZE]) {
+void PrintBoard(char board[]) {
 
     //Variable declarations.
     int i;
@@ -324,7 +472,7 @@ void PrintBoard(char board[][BOARD_SIZE]) {
 
         for (j = 0; j < BOARD_SIZE; ++j) {
 
-            WriteCell(board[i][j]);
+            WriteCell(board[i * BOARD_SIZE + j]);
             WriteMessage(" ");
         }
 
@@ -376,7 +524,7 @@ void SIGUSR1Handler(int signum) {
 
 }
 
-int ReadUserInput(char board[][BOARD_SIZE], int *x, int *y) {
+int ReadUserInput(char board[], int *x, int *y) {
 
     //Variables declarations.
     int  readResult;
@@ -458,26 +606,26 @@ int IsValidCell(char input[], int *x, int *y) {
     return 1;
 }
 
-int IsValidMove(int directions[], int x, int y, char board[][BOARD_SIZE]) {
+int IsValidMove(int directions[], int x, int y, char board[]) {
 
     int sum = 0;
     int i;
 
-    directions[0] = checkLeft(board, x, y, myColor, opponentColor);
+    directions[0] = MoveLeft(board, x, y, myColor, opponentColor);
 
-    directions[1] = checkUpLeft(board, x, y, myColor, opponentColor);
+    directions[1] = MoveUpperLeft(board, x, y, myColor, opponentColor);
 
-    directions[2] = checkUp(board, x, y, myColor, opponentColor);
+    directions[2] = MoveUp(board, x, y, myColor, opponentColor);
 
-    directions[3] = checkUpRight(board, x, y, myColor, opponentColor);
+    directions[3] = MoveUpperRight(board, x, y, myColor, opponentColor);
 
-    directions[4] = checkRight(board, x, y, myColor, opponentColor);
+    directions[4] = MoveRight(board, x, y, myColor, opponentColor);
 
-    directions[5] = checkDownRight(board, x, y, myColor, opponentColor);
+    directions[5] = MoveLowerRight(board, x, y, myColor, opponentColor);
 
-    directions[6] = checkDown(board, x, y, myColor, opponentColor);
+    directions[6] = MoveDown(board, x, y, myColor, opponentColor);
 
-    directions[7] = checkDownLeft(board, x, y, myColor, opponentColor);
+    directions[7] = MoveLowerLeft(board, x, y, myColor, opponentColor);
 
     for (i = 0; i < 8 && sum == 0; ++i) {
 
@@ -494,71 +642,71 @@ int IsValidMove(int directions[], int x, int y, char board[][BOARD_SIZE]) {
 }
 
 void UpdateBoard(int *directions, int x, int y, char color,
-                 char board[][BOARD_SIZE]) {
+                 char board[]) {
 
     int i;
     int j;
 
-    board[x][y] = color;
+    board[x * BOARD_SIZE + y] = color;
 
     //Fill to left side.
     for (i = 1; i <= directions[0]; ++i) {
 
-        board[x][y - i] = color;
+        board[x * BOARD_SIZE + y - i] = color;
     }
 
     //Fill to upper-left side.
     for (i = 1; i <= directions[1]; ++i) {
         for (j = 1; j <= directions[1]; ++j) {
 
-            board[x - i][y - j] = color;
+            board[(x - i) * BOARD_SIZE + (y - j)] = color;
         }
     }
 
     //Fill to up side.
     for (i = 1; i <= directions[2]; ++i) {
 
-        board[x - i][y] = color;
+        board[(x - i) * BOARD_SIZE + y] = color;
     }
 
     //Fill to upper-right side.
     for (i = 1; i <= directions[3]; ++i) {
         for (j = 1; j <= directions[3]; ++j) {
 
-            board[x - i][y + j] = color;
+            board[(x - i) * BOARD_SIZE + (y + j)] = color;
         }
     }
 
     //Fill to right side.
     for (i = 1; i <= directions[4]; ++i) {
 
-        board[x][y + i] = color;
+        board[x * BOARD_SIZE + (y + i)] = color;
     }
 
     //Fill to lower-right side.
     for (i = 1; i <= directions[5]; ++i) {
         for (j = 1; j <= directions[5]; ++j) {
 
-            board[x + i][y + j] = color;
+            board[(x + i) * BOARD_SIZE + (y + j)] = color;
         }
     }
 
     //Fill to down side.
     for (i = 1; i <= directions[6]; ++i) {
 
-        board[x + i][y] = color;
+        board[(x + i) * BOARD_SIZE + y] = color;
     }
 
     //Fill to lower-left side.
     for (i = 1; i <= directions[7]; ++i) {
         for (j = 1; j <= directions[7]; ++j) {
 
-            board[x + i][y - j] = color;
+            board[(x + i) * BOARD_SIZE + (y - j)] = color;
         }
     }
 }
 
-void InitializeBoard(char board[][BOARD_SIZE], char *data) {
+void InitializeBoard(char board[], char *data) {
 
     int i;
     int j;
@@ -567,27 +715,17 @@ void InitializeBoard(char board[][BOARD_SIZE], char *data) {
     for (i = 0; i < BOARD_SIZE; ++i) {
         for (j = 0; j < BOARD_SIZE; ++j) {
 
-            board[i][j] = '0';
+            board[i * BOARD_SIZE + j] = '0';
         }
     }
 
     //Set black cells.
-    board[3][3] = 'b';
-    board[4][4] = 'b';
+    board[3 * BOARD_SIZE + 3] = 'b';
+    board[4 * BOARD_SIZE + 4] = 'b';
 
     //Set white cells.
-    board[3][4] = 'w';
-    board[4][3] = 'w';
-
-    //TODO delete
-    for (i= 0; i < 5; ++i) {
-        for (j = 0; j < 8; ++j) {
-            board[i][j] = 'w';
-        }
-    }
-
-    board[2][2] = 'b';
-    //TODO delete
+    board[3 * BOARD_SIZE + 4] = 'w';
+    board[4 * BOARD_SIZE + 3] = 'w';
 
     if (myColor == 'w') {
 
@@ -606,23 +744,23 @@ void InitializeBoard(char board[][BOARD_SIZE], char *data) {
     }
 }
 
-int IsGameOver(char board[][BOARD_SIZE], char *data) {
+int IsGameOver(char board[], char *data) {
 
     int blackCounter = 0;
     int whiteCounter = 0;
     int freeCounter  = 0;
     int i;
     int j;
-    int result = 0;
+    int result       = 0;
 
     for (i = 0; i < BOARD_SIZE; ++i) {
 
         for (j = 0; j < BOARD_SIZE; ++j) {
 
-            if (board[i][j] == 'b') {
+            if (board[i * BOARD_SIZE + j] == 'b') {
 
                 blackCounter++;
-            } else if (board[i][j] == 'w') {
+            } else if (board[i * BOARD_SIZE + j] == 'w') {
 
                 whiteCounter++;
             } else {
@@ -633,29 +771,26 @@ int IsGameOver(char board[][BOARD_SIZE], char *data) {
     }
 
     //Check if board is full or there are no more moves.
-    if(freeCounter == 0){
+    if (freeCounter == 0) {
 
-        if(blackCounter > whiteCounter){
+        if (blackCounter > whiteCounter) {
 
             data[0] = 'B';
-        }
-        else if(whiteCounter > blackCounter){
+        } else if (whiteCounter > blackCounter) {
 
 
             data[0] = 'W';
-        } else{
+        } else {
 
             data[0] = 'T';
         }
 
         result = 1;
-    }
-    else if(blackCounter == 0){
+    } else if (blackCounter == 0) {
 
         data[0] = 'W';
         result = 1;
-    }
-    else if(whiteCounter == 0){
+    } else if (whiteCounter == 0) {
 
         data[0] = 'B';
         result = 1;
@@ -678,9 +813,9 @@ void WriteMessage(char *message) {
     }
 }
 
-void PrintResult(char result){
+void PrintResult(char result) {
 
-    switch(result){
+    switch (result) {
 
         case 'B':
             WriteMessage("Winning player: Black\n");
@@ -699,248 +834,251 @@ void PrintResult(char result){
     }
 }
 
-/*******************************************************************************
-* function name : checkUp                                                      *
-* input : the game board as char array, the column and row number and two char *
-*         which represent my and opponent symbols.                             *
-* output : the number of move possible up.                                     *
-* explanation : the function check how many moves the player can move up.      *
-*******************************************************************************/
-int checkUp(char *gameArray, int x, int y, char mySymbol, char opSymbol) {
-    //index of the next move of this direction.
-    int index = (y - 1) * BOARD_SIZE + x;
-    int count = 0;
+int MoveUp(char *grid, int x, int y, char mySymbol, char opponentSymbol) {
+
+    //The next position.
+    int position = (y - 1) * BOARD_SIZE + x;
+    int counter  = 0;
+
     if ((y % BOARD_SIZE == 0) || (y % BOARD_SIZE == 1)) {
         return 0;
     }
-    //check how many opponent symbols there is in this direction.
-    while ((index > BOARD_SIZE) && (gameArray[index] == opSymbol)) {
-        count++;
-        index -= BOARD_SIZE;
+
+    //Check number of opponent symbols.
+    while ((position > BOARD_SIZE) && (grid[position] == opponentSymbol)) {
+
+        counter++;
+        position -= BOARD_SIZE;
     }
-    //return how many opponent symbols.
-    if (gameArray[index] == mySymbol) {
-        return count;
+
+    //return number of opponent symbols.
+    if (grid[position] == mySymbol) {
+
+        return counter;
     } else {
+
         return 0;
     }
 }
 
-/*******************************************************************************
-* function name : checkDown                                                    *
-* input : the game board as char array, the column and row number and two char *
-*         which represent my and opponent symbols.                             *
-* output : the number of move possible down.                                   *
-* explanation : the function check how many moves the player can move down.    *
-*******************************************************************************/
-int checkDown(char *gameArray, int x, int y, char mySymbol, char opSymbol) {
-    //index of the next move of this direction.
-    int index = (y + 1) * BOARD_SIZE + x;
-    int count = 0;
+int MoveDown(char *grid, int x, int y, char mySymbol, char opponentSymbol) {
+
+    //The next position.
+    int position = (y + 1) * BOARD_SIZE + x;
+    int counter  = 0;
+
     if ((y % BOARD_SIZE == BOARD_SIZE) || (y % BOARD_SIZE == BOARD_SIZE - 1)) {
+
         return 0;
     }
-    int gameSize = BOARD_SIZE * BOARD_SIZE;
-    //check how many opponent symbols there is in this direction.
-    while ((index < gameSize) && (gameArray[index] == opSymbol)) {
-        count++;
-        index += BOARD_SIZE;
+
+    int size = BOARD_SIZE * BOARD_SIZE;
+
+    //Check number of opponent symbols.
+    while ((position < size) && (grid[position] == opponentSymbol)) {
+
+        counter++;
+        position += BOARD_SIZE;
     }
-    //return how many opponent symbols.
-    if (gameArray[index] == mySymbol) {
-        return count;
+
+    //return number of opponent symbols.
+    if (grid[position] == mySymbol) {
+
+        return counter;
     } else {
+
         return 0;
     }
 }
 
-/*******************************************************************************
-* function name : checkRight                                                   *
-* input : the game board as char array, the column and row number and two char *
-*         which represent my and opponent symbols.                             *
-* output : the number of move possible right.                                  *
-* explanation : the function check how many moves the player can move to the   *
-*               right.                                                         *
-*******************************************************************************/
-int checkRight(char *gameArray, int x, int y, char mySymbol, char opSymbol) {
-    //index of the next move of this direction.
-    int index = y * BOARD_SIZE + x + 1;
-    int count = 0;
+int MoveRight(char *grid, int x, int y, char mySymbol, char opponentSymbol) {
+
+    //The next position.
+    int position = y * BOARD_SIZE + x + 1;
+    int counter  = 0;
+
     if ((x % BOARD_SIZE == BOARD_SIZE - 1) ||
         (x % BOARD_SIZE == BOARD_SIZE - 2)) {
+
         return 0;
     }
-    //check how many opponent symbols there is in this direction.
-    while ((index % BOARD_SIZE != BOARD_SIZE - 1) &&
-           (gameArray[index] == opSymbol)) {
-        count++;
-        index++;
+
+    //Check number of opponent symbols.
+    while ((position % BOARD_SIZE != BOARD_SIZE - 1) &&
+           (grid[position] == opponentSymbol)) {
+
+        counter++;
+        position++;
     }
-    //return how many opponent symbols.
-    if (gameArray[index] == mySymbol) {
-        return count;
+
+    //return number of opponent symbols.
+    if (grid[position] == mySymbol) {
+
+        return counter;
     } else {
+
         return 0;
     }
 }
 
-/*******************************************************************************
-* function name : checkLeft                                                    *
-* input : the game board as char array, the column and row number and two char *
-*         which represent my and opponent symbols.                             *
-* output : the number of move possible left.                                   *
-* explanation : the function check how many moves the player can move to the   *
-*               left.                                                          *
-*******************************************************************************/
-int checkLeft(char *gameArray, int x, int y, char mySymbol, char opSymbol) {
-    //index of the next move of this direction.
-    int index = y * BOARD_SIZE + x - 1;
-    int count = 0;
+int MoveLeft(char *grid, int x, int y, char mySymbol, char opponentSymbol) {
+
+    //The next position.
+    int position = y * BOARD_SIZE + x - 1;
+    int counter  = 0;
+
     if ((x % BOARD_SIZE == 0) || (x % BOARD_SIZE == 1)) {
         return 0;
     }
 
-    //check how many opponent symbols there is in this direction.
-    while ((index % BOARD_SIZE != 0) && (gameArray[index] == opSymbol)) {
-        count++;
-        index--;
+    //Check number of opponent symbols.
+    while ((position % BOARD_SIZE != 0) && (grid[position] == opponentSymbol)) {
+
+        counter++;
+        position--;
     }
-    //return how many opponent symbols.
-    if (gameArray[index] == mySymbol) {
-        return count;
+
+    //return number of opponent symbols.
+    if (grid[position] == mySymbol) {
+
+        return counter;
     } else {
+
         return 0;
     }
 }
 
-/*******************************************************************************
-* function name : checkUpRight                                                 *
-* input : the game board as char array, the column and row number and two char *
-*         which represent my and opponent symbols.                             *
-* output : the number of move possible diagonal up-right.                      *
-* explanation : the function check how many moves the player can move to       *
-*               diagonal up-right.                                             *
-*******************************************************************************/
-int checkUpRight(char *gameArray, int x, int y, char mySymbol, char opSymbol) {
-    //index of the next move of this direction.
-    int index = (y - 1) * BOARD_SIZE + x + 1;
-    int count = 0;
+int
+MoveUpperRight(char *grid, int x, int y, char mySymbol, char opponentSymbol) {
+    //The next position.
+    int position = (y - 1) * BOARD_SIZE + x + 1;
+    int counter  = 0;
+
     if ((y % BOARD_SIZE == 0) || (y % BOARD_SIZE == 1) ||
         (x % BOARD_SIZE == BOARD_SIZE - 1) ||
         (x % BOARD_SIZE == BOARD_SIZE - 2)) {
+
         return 0;
     }
-    //check how many opponent symbols there is in this direction.
-    while ((index % BOARD_SIZE != BOARD_SIZE - 1) && (index > BOARD_SIZE) &&
-           (gameArray[index] == opSymbol)) {
-        count++;
-        index -= BOARD_SIZE;
-        index++;
+
+    //Check number of opponent symbols.
+    while ((position % BOARD_SIZE != BOARD_SIZE - 1) &&
+           (position > BOARD_SIZE) &&
+           (grid[position] == opponentSymbol)) {
+
+        counter++;
+        position -= BOARD_SIZE;
+        position++;
     }
-    //return how many opponent symbols.
-    if (gameArray[index] == mySymbol) {
-        return count;
+    //return number of opponent symbols.
+    if (grid[position] == mySymbol) {
+
+        return counter;
     } else {
+
         return 0;
     }
 }
 
-/*******************************************************************************
-* function name : checkUpLeft                                                  *
-* input : the game board as char array, the column and row number and two char *
-*         which represent my and opponent symbols.                             *
-* output : the number of move possible diagonal up-left.                       *
-* explanation : the function check how many moves the player can move to       *
-*               diagonal up-left.                                              *
-*******************************************************************************/
-int checkUpLeft(char *gameArray, int x, int y, char mySymbol, char opSymbol) {
-    //index of the next move of this direction.
-    int index = (y - 1) * BOARD_SIZE + x - 1;
-    int count = 0;
+int
+MoveUpperLeft(char *grid, int x, int y, char mySymbol, char opponentSymbol) {
+
+    //The next position.
+    int position = (y - 1) * BOARD_SIZE + x - 1;
+    int counter  = 0;
+
     if ((x % BOARD_SIZE == 0) || (x % BOARD_SIZE == 1) ||
         (y % BOARD_SIZE == 0) ||
         (y % BOARD_SIZE == 1)) {
+
         return 0;
     }
-    //check how many opponent symbols there is in this direction.
-    while ((index % BOARD_SIZE != 0) && (index > BOARD_SIZE) &&
-           (gameArray[index] == opSymbol)) {
-        count++;
-        index -= BOARD_SIZE;
-        index--;
+
+    //Check number of opponent symbols.
+    while ((position % BOARD_SIZE != 0) && (position > BOARD_SIZE) &&
+           (grid[position] == opponentSymbol)) {
+        counter++;
+        position -= BOARD_SIZE;
+        position--;
     }
-    //return how many opponent symbols.
-    if (gameArray[index] == mySymbol) {
-        return count;
+
+    //return number of opponent symbols.
+    if (grid[position] == mySymbol) {
+
+        return counter;
     } else {
+
         return 0;
     }
 }
 
-/*******************************************************************************
-* function name : checkDownRight                                               *
-* input : the game board as char array, the column and row number and two char *
-*         which represent my and opponent symbols.                             *
-* output : the number of move possible diagonal down-right.                    *
-* explanation : the function check how many moves the player can move to       *
-*               diagonal down-right.                                           *
-*******************************************************************************/
 int
-checkDownRight(char *gameArray, int x, int y, char mySymbol, char opSymbol) {
-    //index of the next move of this direction.
-    int index = (y + 1) * BOARD_SIZE + x + 1;
-    int count = 0;
+MoveLowerRight(char *grid, int x, int y, char mySymbol, char opponentSymbol) {
+
+    //The next position.
+    int position = (y + 1) * BOARD_SIZE + x + 1;
+    int counter  = 0;
+
     if ((x % BOARD_SIZE == BOARD_SIZE - 1) ||
         (x % BOARD_SIZE == BOARD_SIZE - 2) ||
         (y % BOARD_SIZE == BOARD_SIZE) || (y % BOARD_SIZE == BOARD_SIZE - 1) ||
-        (gameArray[index] == mySymbol)) {
+        (grid[position] == mySymbol)) {
+
         return 0;
     }
-    int gameSize = BOARD_SIZE * BOARD_SIZE;
-    //check how many opponent symbols there is in this direction.
-    while ((index % BOARD_SIZE != BOARD_SIZE - 1) && (index < gameSize) &&
-           (gameArray[index] == opSymbol)) {
-        count++;
-        index += BOARD_SIZE;
-        index++;
+
+    int size = BOARD_SIZE * BOARD_SIZE;
+
+    //Check number of opponent symbols.
+    while ((position % BOARD_SIZE != BOARD_SIZE - 1) && (position < size) &&
+           (grid[position] == opponentSymbol)) {
+
+        counter++;
+        position += BOARD_SIZE;
+        position++;
     }
-    //return how many opponent symbols.
-    if (gameArray[index] == mySymbol) {
-        return count;
+
+    //return number of opponent symbols.
+    if (grid[position] == mySymbol) {
+
+        return counter;
     } else {
+
         return 0;
     }
 }
 
-/*******************************************************************************
-* function name : checkDownLeft                                                *
-* input : the game board as char array, the column and row number and two char *
-*         which represent my and opponent symbols.                             *
-* output : the number of move possible diagonal down-left.                     *
-* explanation : the function check how many moves the player can move to       *
-*               diagonal down-left.                                            *
-*******************************************************************************/
-int checkDownLeft(char *gameArray, int x, int y, char mySymbol, char opSymbol) {
-    //index of the next move of this direction.
-    int index = (y + 1) * BOARD_SIZE + x - 1;
-    int count = 0;
+int
+MoveLowerLeft(char *grid, int x, int y, char mySymbol, char opponentSymbol) {
+
+    //The next position.
+    int position = (y + 1) * BOARD_SIZE + x - 1;
+    int counter  = 0;
+
     if ((x % BOARD_SIZE == 0) || (x % BOARD_SIZE == 1) ||
         (y % BOARD_SIZE == BOARD_SIZE) ||
-        (y % BOARD_SIZE == BOARD_SIZE - 1) || (gameArray[index] == mySymbol)) {
+        (y % BOARD_SIZE == BOARD_SIZE - 1) || (grid[position] == mySymbol)) {
+
         return 0;
     }
-    int gameSize = BOARD_SIZE * BOARD_SIZE;
-    //check how many opponent symbols there is in this direction.
-    while ((index % BOARD_SIZE != 0) && (index < gameSize) &&
-           (gameArray[index] == opSymbol)) {
-        count++;
-        index += BOARD_SIZE;
-        index--;
+
+    int size = BOARD_SIZE * BOARD_SIZE;
+
+    //Check number of opponent symbols.
+    while ((position % BOARD_SIZE != 0) && (position < size) &&
+           (grid[position] == opponentSymbol)) {
+
+        counter++;
+        position += BOARD_SIZE;
+        position--;
     }
-    //return how many opponent symbols.
-    if (gameArray[index] == mySymbol) {
-        return count;
+
+    //return number of opponent symbols.
+    if (grid[position] == mySymbol) {
+
+        return counter;
     } else {
+
         return 0;
     }
 }
