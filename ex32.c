@@ -217,6 +217,22 @@ int IsGameOver(char board[], char *data);
 */
 void PrintResult(char result);
 
+/**
+ * function name: CheckAllDirections.
+ * The input: game board, x, y.
+ * The output: number of valid directions..
+ * The function operation: checks all the directions.
+*/
+int CheckAllDirections(char board[], int x, int y);
+
+/**
+ * function name: HasMove.
+ * The input: game board, shared memory.
+ * The output: does the player has.
+ * The function operation: runs over the boad and checks for valid moves.
+*/
+int HasMove(char board[], char *data);
+
 //TODO make local
 int  stop;
 char myColor;
@@ -338,15 +354,23 @@ int main() {
 
     while (!stop) {
 
-        WriteMessage("Please choose a square\n");
-
-        resultValue = ReadUserInput(board, &x, &y);
-
-        HandleResult(resultValue, x, y, board, data);
-
-        if (IsGameOver(board, data)) {
+        //Check if player has possible moves.
+        if (!HasMove(board, data)) {
 
             stop = 1;
+        } else {
+
+            WriteMessage("Please choose a square\n");
+
+            resultValue = ReadUserInput(board, &x, &y);
+
+            HandleResult(resultValue, x, y, board, data);
+
+            //Check if the game is over.
+            if (IsGameOver(board, data)) {
+
+                stop = 1;
+            }
         }
     }
 
@@ -354,6 +378,127 @@ int main() {
 
     //Print game result message.
     PrintResult(data[0]);
+}
+
+int HasMove(char board[], char *data) {
+
+    int i;
+    int j;
+    int numOfValidMoves = 0;
+    int playerCounter   = 0;
+    int opponentCounter = 0;
+    int freeCounter     = 0;
+
+    for (i = 0; i < BOARD_SIZE; ++i) {
+
+        for (j = 0; j < BOARD_SIZE; ++j) {
+
+            if (board[i * BOARD_SIZE + j] == myColor) {
+
+                playerCounter++;
+            } else if (board[i * BOARD_SIZE + j] == opponentColor) {
+
+                numOfValidMoves = CheckAllDirections(board, i, j);
+
+                if(numOfValidMoves > 0){
+                    return 1;
+                }
+
+                opponentCounter++;
+            } else {
+
+                freeCounter++;
+            }
+        }
+    }
+
+    //Check if the player has any moves.
+    if (numOfValidMoves == 0) {
+
+        //Set the game result message.
+        if (playerCounter > opponentCounter) {
+
+            if (myColor == 'b') {
+
+                data[0] = 'B';
+            } else {
+
+                data[0] = 'W';
+            }
+        } else if (opponentCounter > playerCounter) {
+
+            if (opponentCounter == 'b') {
+
+                data[0] = 'B';
+            } else {
+
+                data[0] = 'W';
+            }
+        } else {
+
+            data[0] = 'T';
+        }
+
+        return 0;
+    }
+
+    return 1;
+}
+
+int CheckAllDirections(char board[], int x, int y) {
+
+    int numOfValidDirections = 0;
+    int directions[8];
+
+    //Check if left move is valid.
+    if (x > 0) {
+
+        numOfValidDirections += IsValidMove(directions, y, x - 1, board);
+    }
+
+    //Check if upper-left move is valid.
+    if (x > 0 && y > 0) {
+
+        numOfValidDirections += IsValidMove(directions, y - 1, x - 1 , board);
+    }
+
+    //Check if up move is valid.
+    if (y > 0) {
+
+        numOfValidDirections += IsValidMove(directions, y - 1, x , board);
+    }
+
+    //Check if upper-right move is legal.
+    if (x < BOARD_SIZE - 1 && y > 0) {
+
+        numOfValidDirections += IsValidMove(directions, y - 1, x + 1 , board);
+    }
+
+    //Check if right move is valid.
+    if (x < BOARD_SIZE - 1) {
+
+        numOfValidDirections += IsValidMove(directions, y, x + 1, board);
+    }
+
+    //Check if lower-right move is valid.
+    if (x < BOARD_SIZE - 1 && y < BOARD_SIZE - 1) {
+
+        numOfValidDirections += IsValidMove(directions, y + 1, x + 1, board);
+    }
+
+    //Check if down move is valid.
+    if (y < BOARD_SIZE - 1) {
+
+        numOfValidDirections += IsValidMove(directions, y + 1, x, board);
+    }
+
+    //Check if lower-left move is valid.
+    if (x > 0 && y < BOARD_SIZE - 1) {
+
+        numOfValidDirections += IsValidMove(directions, y + 1, x - 1, board);
+    }
+
+    return numOfValidDirections;
 }
 
 void
