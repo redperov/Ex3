@@ -15,7 +15,6 @@
 #include <signal.h>
 #include <memory.h>
 
-//TODO minimize size
 #define SHM_SIZE 4096
 
 /**
@@ -79,8 +78,7 @@ int main(){
     int stop;
 
     //Create key.
-    //TODO remove ../
-    key = ftok("../ex31.c", 'k');
+    key = ftok("ex31.c", 'k');
 
     //Check if ftok succeeded.
     if(key < 0){

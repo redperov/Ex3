@@ -91,10 +91,10 @@ void PrintBoard(char board[]);
 /**
  * function name: HandleResult.
  * The input: result, x, y, game board, shared memory data.
- * The output: void.
+ * The output: has an error happened.
  * The function operation: handles the user input response.
 */
-void HandleResult(int result, int x, int y, char board[], char *data);
+int HandleResult(int result, int x, int y, char board[], char *data);
 
 /**
  * function name: MoveUp.
@@ -256,6 +256,7 @@ int main() {
     struct sigaction usr_action;
     sigset_t         block_mask;
     int              resultValue;
+    int              isBadInput;
     char             board[BOARD_SIZE * BOARD_SIZE];
     int              x;
     int              y;
@@ -354,10 +355,11 @@ int main() {
         opponentColor = 'b';
     }
 
+    //Initializes game board.
     InitializeBoard(board, data);
-    //TODO delete if required at the start of the game
-    PrintBoard(board);
-    stop = 0;
+
+    stop       = 0;
+    isBadInput = 0;
 
     while (!stop) {
 
@@ -367,11 +369,14 @@ int main() {
             stop = 1;
         } else {
 
-            WriteMessage("Please choose a square\n");
+            if (!isBadInput) {
+
+                WriteMessage("Please choose a square\n");
+            }
 
             resultValue = ReadUserInput(board, &x, &y);
 
-            HandleResult(resultValue, x, y, board, data);
+            isBadInput = HandleResult(resultValue, x, y, board, data);
 
             //Check if the game is over.
             if (IsGameOver(board, data)) {
@@ -380,8 +385,6 @@ int main() {
             }
         }
     }
-
-    //TODO detach if needed
 
     //Print game result message.
     PrintResult(data[0]);
@@ -525,7 +528,7 @@ int CheckAllDirections(char board[], int x, int y) {
     return numOfValidDirections;
 }
 
-void
+int
 HandleResult(int result, int x, int y, char board[], char *data) {
 
     switch (result) {
@@ -543,17 +546,19 @@ HandleResult(int result, int x, int y, char board[], char *data) {
 
             WriteMessage("No such square\n");
             WriteMessage("Please choose another square\n");
-            break;
+            return 1;
 
             //Illegal move.
         case 2:
             WriteMessage("This square is invalid\n");
             WriteMessage("Please choose another square\n");
-            break;
+            return 1;
 
         default:
             break;
     }
+
+    return 0;
 }
 
 void WriteMove(int x, int y, char *data) {
@@ -585,8 +590,7 @@ void WaitForOpponent(char *data, char board[]) {
             isMoveMade = 1;
         } else {
 
-            //TODO uncomment
-            // WriteMessage("Waiting for the other player to make a move\n");
+            WriteMessage("Waiting for the other player to make a move\n");
             sleep(1);
         }
     }
