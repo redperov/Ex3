@@ -58,6 +58,14 @@ void WriteMessage(char *message);
 */
 void PrintResult(char result);
 
+/**
+ * function name: DetachMemory.
+ * The input: shared memory.
+ * The output: void.
+ * The function operation: detaches shared memory.
+*/
+void DetachMemory(char *data);
+
 int main(){
 
     //Variable declarations.
@@ -171,6 +179,9 @@ int main(){
     //Print game result message.
     PrintResult(data[0]);
 
+    //Detach from shared memory.
+    DetachMemory(data);
+
     //Release shared memory.
     ReleaseMemory(shmid);
 }
@@ -201,6 +212,20 @@ void NotifyGameStart(pid_t pid){
     if(killResult < 0){
 
         perror("Error: kill failed.\n");
+        exit(1);
+    }
+}
+
+void DetachMemory(char *data){
+
+    int resultValue;
+
+    resultValue = shmdt(data);
+
+    //Check if shmdt succeeded.
+    if(resultValue < 0){
+
+        perror("Error: shmdt failed.\n");
         exit(1);
     }
 }

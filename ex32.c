@@ -233,7 +233,14 @@ int CheckAllDirections(char board[], int x, int y);
 */
 int HasMove(char board[], char *data);
 
-//TODO make local
+/**
+ * function name: DetachMemory.
+ * The input: shared memory.
+ * The output: void.
+ * The function operation: detaches shared memory.
+*/
+void DetachMemory(char *data);
+
 int  stop;
 char myColor;
 char opponentColor;
@@ -378,6 +385,23 @@ int main() {
 
     //Print game result message.
     PrintResult(data[0]);
+
+    //Detach from shared memory.
+    DetachMemory(data);
+}
+
+void DetachMemory(char *data) {
+
+    int resultValue;
+
+    resultValue = shmdt(data);
+
+    //Check if shmdt succeeded.
+    if (resultValue < 0) {
+
+        perror("Error: shmdt failed.\n");
+        exit(1);
+    }
 }
 
 int HasMove(char board[], char *data) {
@@ -400,7 +424,7 @@ int HasMove(char board[], char *data) {
 
                 numOfValidMoves = CheckAllDirections(board, i, j);
 
-                if(numOfValidMoves > 0){
+                if (numOfValidMoves > 0) {
                     return 1;
                 }
 
@@ -459,19 +483,19 @@ int CheckAllDirections(char board[], int x, int y) {
     //Check if upper-left move is valid.
     if (x > 0 && y > 0) {
 
-        numOfValidDirections += IsValidMove(directions, y - 1, x - 1 , board);
+        numOfValidDirections += IsValidMove(directions, y - 1, x - 1, board);
     }
 
     //Check if up move is valid.
     if (y > 0) {
 
-        numOfValidDirections += IsValidMove(directions, y - 1, x , board);
+        numOfValidDirections += IsValidMove(directions, y - 1, x, board);
     }
 
     //Check if upper-right move is legal.
     if (x < BOARD_SIZE - 1 && y > 0) {
 
-        numOfValidDirections += IsValidMove(directions, y - 1, x + 1 , board);
+        numOfValidDirections += IsValidMove(directions, y - 1, x + 1, board);
     }
 
     //Check if right move is valid.
@@ -790,7 +814,6 @@ void UpdateBoard(int *directions, int x, int y, char color,
                  char board[]) {
 
     int i;
-    int j;
 
     board[x * BOARD_SIZE + y] = color;
 
@@ -802,10 +825,8 @@ void UpdateBoard(int *directions, int x, int y, char color,
 
     //Fill to upper-left side.
     for (i = 1; i <= directions[1]; ++i) {
-        for (j = 1; j <= directions[1]; ++j) {
 
-            board[(x - i) * BOARD_SIZE + (y - j)] = color;
-        }
+        board[(x - i) * BOARD_SIZE + (y - i)] = color;
     }
 
     //Fill to up side.
@@ -816,10 +837,8 @@ void UpdateBoard(int *directions, int x, int y, char color,
 
     //Fill to upper-right side.
     for (i = 1; i <= directions[3]; ++i) {
-        for (j = 1; j <= directions[3]; ++j) {
 
-            board[(x - i) * BOARD_SIZE + (y + j)] = color;
-        }
+        board[(x - i) * BOARD_SIZE + (y + i)] = color;
     }
 
     //Fill to right side.
@@ -830,10 +849,8 @@ void UpdateBoard(int *directions, int x, int y, char color,
 
     //Fill to lower-right side.
     for (i = 1; i <= directions[5]; ++i) {
-        for (j = 1; j <= directions[5]; ++j) {
 
-            board[(x + i) * BOARD_SIZE + (y + j)] = color;
-        }
+        board[(x + i) * BOARD_SIZE + (y + i)] = color;
     }
 
     //Fill to down side.
@@ -844,10 +861,8 @@ void UpdateBoard(int *directions, int x, int y, char color,
 
     //Fill to lower-left side.
     for (i = 1; i <= directions[7]; ++i) {
-        for (j = 1; j <= directions[7]; ++j) {
 
-            board[(x + i) * BOARD_SIZE + (y - j)] = color;
-        }
+        board[(x + i) * BOARD_SIZE + (y - i)] = color;
     }
 }
 
