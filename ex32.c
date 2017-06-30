@@ -241,6 +241,14 @@ int HasMove(char board[], char *data);
 */
 void DetachMemory(char *data);
 
+/**
+ * function name: ShouldWait.
+ * The input: game board.
+ * The output: bool.
+ * The function operation: checks if player should wait.
+*/
+int ShouldWait(char board[]);
+
 int  stop;
 char myColor;
 char opponentColor;
@@ -315,7 +323,7 @@ int main() {
     }
 
     //Create key.
-    key = ftok("../ex31.c", 'k');
+    key = ftok("ex31.c", 'k');
 
     //Check if ftok succeeded.
     if (key < 0) {
@@ -590,7 +598,12 @@ void WaitForOpponent(char *data, char board[]) {
             isMoveMade = 1;
         } else {
 
-            WriteMessage("Waiting for the other player to make a move\n");
+            //Check if player should wait for opponent.
+            if (!ShouldWait(board)) {
+
+                WriteMessage("Waiting for the other player to make a move\n");
+            }
+
             sleep(1);
         }
     }
@@ -906,6 +919,41 @@ void InitializeBoard(char board[], char *data) {
         //Update board according to opponent move.
         UpdateBoard(directions, y, x, opponentColor, board);
     }
+}
+
+int ShouldWait(char board[]) {
+
+    int blackCounter = 0;
+    int whiteCounter = 0;
+    int freeCounter  = 0;
+    int i;
+    int j;
+    int result       = 0;
+
+    for (i = 0; i < BOARD_SIZE; ++i) {
+
+        for (j = 0; j < BOARD_SIZE; ++j) {
+
+            if (board[i * BOARD_SIZE + j] == 'b') {
+
+                blackCounter++;
+            } else if (board[i * BOARD_SIZE + j] == 'w') {
+
+                whiteCounter++;
+            } else {
+
+                freeCounter++;
+            }
+        }
+    }
+
+    //Check if board is full or there are no more moves.
+    if (freeCounter == 0 || blackCounter == 0 || whiteCounter == 0) {
+
+        result = 1;
+    }
+
+    return result;
 }
 
 int IsGameOver(char board[], char *data) {
