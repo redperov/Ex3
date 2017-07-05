@@ -1,6 +1,6 @@
 /******************************************
-* Student name: TODO add
-* Student ID: TODO add
+* Student name: Danny Perov
+* Student ID: 318810637
 * Course Exercise Group: 05
 * Exercise name: ex3
 ******************************************/
@@ -15,7 +15,7 @@
 #include <signal.h>
 #include <memory.h>
 
-#define SHM_SIZE 2
+#define SHM_SIZE 4096
 
 /**
  * function name: ReadPid.

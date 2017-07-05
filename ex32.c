@@ -1,6 +1,6 @@
 /******************************************
-* Student name: TODO add
-* Student ID: TODO add
+* Student name: Danny Perov
+* Student ID: 318810637
 * Course Exercise Group: 05
 * Exercise name: ex3
 ******************************************/
@@ -13,7 +13,7 @@
 #include <sys/shm.h>
 #include <string.h>
 
-#define SHM_SIZE 2
+#define SHM_SIZE 4096
 #define BOARD_SIZE 8
 
 /**
