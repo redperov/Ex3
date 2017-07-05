@@ -15,7 +15,7 @@
 #include <signal.h>
 #include <memory.h>
 
-#define SHM_SIZE 4096
+#define SHM_SIZE 2
 
 /**
  * function name: ReadPid.

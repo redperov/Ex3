@@ -13,7 +13,7 @@
 #include <sys/shm.h>
 #include <string.h>
 
-#define SHM_SIZE 4096
+#define SHM_SIZE 2
 #define BOARD_SIZE 8
 
 /**
@@ -227,11 +227,11 @@ int CheckAllDirections(char board[], int x, int y);
 
 /**
  * function name: HasMove.
- * The input: game board, shared memory.
+ * The input: game board, shared memory, my color, opponent color.
  * The output: does the player has.
  * The function operation: runs over the boad and checks for valid moves.
 */
-int HasMove(char board[], char *data);
+int HasMove(char board[], char *data, char myCol, char oppCol);
 
 /**
  * function name: DetachMemory.
@@ -372,7 +372,7 @@ int main() {
     while (!stop) {
 
         //Check if player has possible moves.
-        if (!HasMove(board, data)) {
+        if (!HasMove(board, data, myColor, opponentColor)) {
 
             stop = 1;
         } else {
@@ -382,6 +382,7 @@ int main() {
                 WriteMessage("Please choose a square\n");
             }
 
+            //Read user input.
             resultValue = ReadUserInput(board, &x, &y);
 
             isBadInput = HandleResult(resultValue, x, y, board, data);
@@ -415,7 +416,7 @@ void DetachMemory(char *data) {
     }
 }
 
-int HasMove(char board[], char *data) {
+int HasMove(char board[], char *data, char myCol, char oppCol) {
 
     int i;
     int j;
@@ -424,14 +425,22 @@ int HasMove(char board[], char *data) {
     int opponentCounter = 0;
     int freeCounter     = 0;
 
+    //Check if game is over.
+    if (data[0] == 'B' || data[0] == 'W' || data[0] == 'T') {
+        return 0;
+    }
+
     for (i = 0; i < BOARD_SIZE; ++i) {
 
         for (j = 0; j < BOARD_SIZE; ++j) {
 
-            if (board[i * BOARD_SIZE + j] == myColor) {
+            if (board[i * BOARD_SIZE + j] == myCol) {
 
                 playerCounter++;
-            } else if (board[i * BOARD_SIZE + j] == opponentColor) {
+            } else if (board[i * BOARD_SIZE + j] == oppCol) {
+
+                opponentCounter++;
+            } else {
 
                 numOfValidMoves = CheckAllDirections(board, i, j);
 
@@ -439,8 +448,6 @@ int HasMove(char board[], char *data) {
                     return 1;
                 }
 
-                opponentCounter++;
-            } else {
 
                 freeCounter++;
             }
@@ -453,7 +460,7 @@ int HasMove(char board[], char *data) {
         //Set the game result message.
         if (playerCounter > opponentCounter) {
 
-            if (myColor == 'b') {
+            if (myCol == 'b') {
 
                 data[0] = 'B';
             } else {
@@ -485,53 +492,7 @@ int CheckAllDirections(char board[], int x, int y) {
     int numOfValidDirections = 0;
     int directions[8];
 
-    //Check if left move is valid.
-    if (x > 0) {
-
-        numOfValidDirections += IsValidMove(directions, y, x - 1, board);
-    }
-
-    //Check if upper-left move is valid.
-    if (x > 0 && y > 0) {
-
-        numOfValidDirections += IsValidMove(directions, y - 1, x - 1, board);
-    }
-
-    //Check if up move is valid.
-    if (y > 0) {
-
-        numOfValidDirections += IsValidMove(directions, y - 1, x, board);
-    }
-
-    //Check if upper-right move is legal.
-    if (x < BOARD_SIZE - 1 && y > 0) {
-
-        numOfValidDirections += IsValidMove(directions, y - 1, x + 1, board);
-    }
-
-    //Check if right move is valid.
-    if (x < BOARD_SIZE - 1) {
-
-        numOfValidDirections += IsValidMove(directions, y, x + 1, board);
-    }
-
-    //Check if lower-right move is valid.
-    if (x < BOARD_SIZE - 1 && y < BOARD_SIZE - 1) {
-
-        numOfValidDirections += IsValidMove(directions, y + 1, x + 1, board);
-    }
-
-    //Check if down move is valid.
-    if (y < BOARD_SIZE - 1) {
-
-        numOfValidDirections += IsValidMove(directions, y + 1, x, board);
-    }
-
-    //Check if lower-left move is valid.
-    if (x > 0 && y < BOARD_SIZE - 1) {
-
-        numOfValidDirections += IsValidMove(directions, y + 1, x - 1, board);
-    }
+    numOfValidDirections = IsValidMove(directions, y, x, board);
 
     return numOfValidDirections;
 }
